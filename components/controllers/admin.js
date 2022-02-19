@@ -17,12 +17,31 @@ exports.registerAdmin = async (req, res) => {
             name:req.body.name,
             email:req.body.email,
             password:req.body.password
-        }
+        }   
         const newAdmin = new Admin(admin)
         await newAdmin.save()
-        res.json(newAdmin)
+
+        //sending mail to the admin once registered
+        const mailOptions = {
+            from: 'helping.hands.relief.movement@gmail.com',
+            to: authority.email,
+            subject: `Registration for Admin successful`,
+            html: `<h1>Hello ${admin.name}, Your Registration for Admin was successful, kindly login for further actions.</h1>`
+          };
+
+          transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+              console.log(error);
+            } else {
+              console.log('Email sent: ' + info.response);
+            }
+          });
+
+        context = {"message": "Registration Success"};
+        res.json(context);
     } catch (err) {
-        console.error(err)
+        context = {"message": "Registration Failed"};
+        res.json(context);
     }
 }
 

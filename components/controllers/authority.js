@@ -24,11 +24,30 @@ exports.registerAuthority = async (req, res) => {
             additionalInfo:req.body.additionalInfo
         }
         const newAuth = new Authority(authority)
-        await newAuth.save()
-        process.env[category] = newAuth.helpProvide;
-        res.json(newAuth)
+        await newAuth.save();
+
+        const mailOptions = {
+            from: 'helping.hands.relief.movement@gmail.com',
+            to: authority.email,
+            subject: `Registration for ${authority.helpProvide} successful`,
+            html: `<h1>Hello ${authority.name}, Your Registration for ${authority.helpProvide} was successfull, kindly login for further actions.</h1>`
+          };
+
+          //sending mail to the authority once registered
+          transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+              console.log(error);
+            } else {
+              console.log('Email sent: ' + info.response);
+            }
+          });
+          context = {"message": "Registration Successful"};
+          res.json(context);
+
     } catch (err) {
-        console.error(err)
+        context = {"message": "Registration Failed"};
+        console.log(err);
+        res.json(context);
     }
 }
 
