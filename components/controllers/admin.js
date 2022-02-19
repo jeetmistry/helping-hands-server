@@ -15,7 +15,7 @@ exports.registerAdmin = async (req, res) => {
     try {
         const admin = {
             name:req.body.name,
-            emial:req.body.email,
+            email:req.body.email,
             password:req.body.password
         }
         const newAdmin = new Admin(admin)
