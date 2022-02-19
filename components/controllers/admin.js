@@ -24,7 +24,7 @@ exports.registerAdmin = async (req, res) => {
         //sending mail to the admin once registered
         const mailOptions = {
             from: 'helping.hands.relief.movement@gmail.com',
-            to: authority.email,
+            to: admin.email,
             subject: `Registration for Admin successful`,
             html: `<h1>Hello ${admin.name}, Your Registration for Admin was successful, kindly login for further actions.</h1>`
           };
@@ -40,6 +40,7 @@ exports.registerAdmin = async (req, res) => {
         context = {"message": "Registration Success"};
         res.json(context);
     } catch (err) {
+        console.log(err);
         context = {"message": "Registration Failed"};
         res.json(context);
     }
