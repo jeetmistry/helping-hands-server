@@ -13,7 +13,12 @@ const transporter = nodemailer.createTransport({
 
 exports.registerAdmin = async (req, res) => {
     try {
-        const newAdmin = new Admin(req.body)
+        const admin = {
+            name:req.body.name,
+            emial:req.body.email,
+            password:req.body.password
+        }
+        const newAdmin = new Admin(admin)
         await newAdmin.save()
         res.json(newAdmin)
     } catch (err) {

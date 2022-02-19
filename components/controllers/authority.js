@@ -13,7 +13,17 @@ const transporter = nodemailer.createTransport({
 var category;
 exports.registerAuthority = async (req, res) => {
     try {
-        const newAuth = new Authority(req.body)
+        const authority = {
+            name:req.body.name,
+            email:req.body.email,
+            password:req.body.password,
+            helpProvide:req.body.helpProvide,
+            address:req.body.address,
+            pincode:req.body.pincode,
+            contactNo:req.body.contactNo,
+            additionalInfo:req.body.additionalInfo
+        }
+        const newAuth = new Authority(authority)
         await newAuth.save()
         process.env[category] = newAuth.helpProvide;
         res.json(newAuth)
